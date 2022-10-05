@@ -12,6 +12,8 @@ const char broker[] = "broker.mqttdashboard.com";
 int port = 1883;
 const char topic[] = "SIT210/wave";
 
+bool recieve = false;
+
 void setup()
 {
     // Initialize serial and wait for port to open:
@@ -84,12 +86,23 @@ void loop()
         Serial.print(messageSize);
         Serial.println(" bytes:");
 
+        recieve = false;
+        
         // use the Stream interface to print the contents
         while (mqttClient.available())
         {
             Serial.print((char)mqttClient.read());
+            
+            recieve = true;
         }
-        blink();
+        
+        Serial.println();
+        
+        if (recieve)
+        {
+            blink();
+        }
+        
         Serial.println();
     }
 }
